@@ -11,9 +11,9 @@ if first then
         print("outname not find")
     else
         if inputfile then
-            executeStr = string.format("javac %s && java %s < %s ", filename, outname, inputfile)
+            executeStr = string.format("javac %s && java -ea %s < %s ", filename, outname, inputfile)
         else
-            executeStr = string.format("javac %s && java %s ", filename, outname)
+            executeStr = string.format("javac %s && java -ea %s ", filename, outname)
         end
     end
 else
