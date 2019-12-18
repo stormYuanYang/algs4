@@ -101,6 +101,88 @@ class Deque<Item> {
     }
 }
 
+// 注意 此类并未编写完
+class ResizingArrayDeque<Item> {
+    private static int DEFAULT_CAPACITY = 4;
+    private static boolean LEFT = true;
+    private static boolean RIGHT = false;
+    private Item[] leftArray;
+    private Item[] rightArray;
+    private int leftSize;
+    private int rightSize;
+
+    // 这里申请内存失败，应该抛出异常
+    // 因为主要目的时学习算法知识，而不是语言 暂时不考虑异常处理
+    private void resize(boolean isLeft, int newcap) {
+        if (newcap<=DEFAULT_CAPACITY) {
+            return;
+        } 
+        else {}
+
+        Item[] tmp = (Item[]) new Object[newcap];
+        if (isLeft) {
+            for (int i = 0; i < tmp.length; i++) {
+                tmp[i] = leftArray[i];
+            }
+            leftArray = tmp;
+        }
+        else {
+            for (int i = 0; i < tmp.length; i++) {
+                tmp[i] = rightArray[i];
+            }
+            rightArray = tmp;
+        }
+    }
+    public ResizingArrayDeque() {
+        leftArray = (Item[]) new Object[DEFAULT_CAPACITY];
+        rightArray = (Item[]) new Object[DEFAULT_CAPACITY];
+    }
+    public boolean isEmpty() {
+        return (leftSize+rightSize) == 0;
+    }
+    public int size() {
+        return leftSize + rightSize;
+    }
+    public void pushLeft(Item item) {
+        if (leftSize==leftArray.length) {
+            resize(LEFT, leftSize*2);
+        }
+        else {}
+        // 以后尽量不写a++，++a之类的代码；这是非常不好的
+        // a = a+1;更加清晰，也不容易出错
+        leftArray[leftSize] = item;
+        leftSize = leftSize+1;
+    }
+    public void pushRight(Item item) {
+        if (rightSize==rightArray.length) {
+            // 注意，这里没有对rightSize*2的结果做判断，可能会溢出
+            // 在生产环境的代码，应该考虑到容量大小溢出的问题
+            resize(RIGHT, rightSize*2);
+        }
+        else {}
+        rightArray[rightSize] = item;
+        rightSize = rightSize+1;
+    }
+    public Item popLeft() {
+        assert(leftSize>0);
+        Item item = leftArray[leftSize--];
+        if (leftSize<=leftArray.length/4) {
+            resize(LEFT, leftArray.length/2);
+        }
+        else {}
+        return item;
+    }
+    public Item popRight() {
+        assert(rightSize>0);
+        Item item = rightArray[rightSize--];
+        if (rightSize<=rightArray.length/4) {
+            resize(RIGHT, rightArray.length/2);
+        }
+        else {}
+        return item;
+    }
+}
+
 public class exercise1333 {
     public static void main(String[] args) {
         Deque<String> deque = new Deque<>();
