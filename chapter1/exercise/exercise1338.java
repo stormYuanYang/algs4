@@ -59,8 +59,84 @@ class GeneralizedQueue<Item> {
     }
 }
 
+class LinkedListQueue<Item> {
+    private class Node {
+        Item item;
+        Node next;
+    }
+    private Node first;
+    private Node last;
+    private int m_size;
+    public LinkedListQueue() {
+    }
+    public boolean isEmpty() {
+        return first == null;
+    }
+    public void insert(Item x) {
+        Node newnode = new Node();
+        newnode.item = x;
+        if (first==null) {
+            assert last==null;
+            first = newnode;
+            last = newnode;
+        }
+        else {
+            last.next = newnode;
+            last = newnode;
+        }
+        m_size++;
+    }
+    public Item delete(int k) {
+        assert !isEmpty();
+        assert (0<k && k <= m_size);
+        if (k==1) {
+            Item ret = first.item;
+            first = first.next;
+            if (first==null) {
+                last = null;
+            }
+            else {}
+            m_size--;
+            return ret;
+        }
+        else {
+            Node prev = first;
+            Node current = first.next;
+            for (int i = 2; i < k; i++) {// 移动k-2次
+                prev = current;
+                current = current.next;
+            }
+            Item ret = current.item;
+            prev.next = current.next;
+            // 如果是最后一个节点 需要重新设置last指针
+            if (current.next==null) {
+                last = prev;
+            }
+            else {}
+            m_size--;
+            return ret;
+        }
+    }
+    public void print() {
+        if (isEmpty()) {
+            StdOut.println("there is empty");
+            return;
+        } 
+        Node current = first;
+        while (current!=null) {
+            StdOut.print(current.item);
+            current = current.next;
+            if (current!=null) {
+                StdOut.print("->");
+            }
+            else {}
+        }
+        StdOut.println();
+    }
+}
+
 public class exercise1338 {
-    public static void main(String[] args) {
+    public static void test1() {
         while (!StdIn.isEmpty()) {
             int N = StdIn.readInt();
             int M = StdIn.readInt();
@@ -74,5 +150,23 @@ public class exercise1338 {
                 queue.print();
             }
         }
+    }
+    public static void test2() {
+        while (!StdIn.isEmpty()) {
+            int N = StdIn.readInt();
+            int M = StdIn.readInt();
+            LinkedListQueue<Integer> queue = new LinkedListQueue<>();
+            for (int i = 0; i < N; i++) {
+                queue.insert(StdIn.readInt());
+            }
+            queue.print();
+            for (int i = 0; i < M; i++) {
+                StdOut.println(String.format("deleted:%d", queue.delete(StdIn.readInt())));
+                queue.print();
+            }
+        }
+    }
+    public static void main(String[] args) {
+        test2();
     }
 }
