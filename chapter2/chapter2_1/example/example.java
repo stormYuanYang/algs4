@@ -234,8 +234,8 @@ class SortCompare {
         Double[] a = new Double[N];
         for (int t=0; t<T; t++) {
             for (int i=0; i<N; i++) {
-                a[i] = 10.0;
-                //a[i] = StdRandom.uniform();
+                //a[i] = 10.0;
+                a[i] = StdRandom.uniform();
             }
             total += time(alg, a);
         }
